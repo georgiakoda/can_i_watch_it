@@ -4,8 +4,6 @@ import cors from 'cors';
 
 const app = express();
 
-
-//MOVE THESE TO .ENV FILE
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 const WATCHMODE_API_KEY = process.env.WATCHMODE_API_KEY; 
 const API_URL = 'https://streaming-availability.p.rapidapi.com/shows/search/title';
