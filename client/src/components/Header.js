@@ -15,7 +15,7 @@ const Header = ({ services, onSearch, filterBy, setFilter }) => {
         </p>
 
 
-        <SearchBar services={services} onSearch={onSearch} filterBy={filterBy} setFilter={setFilter}/>
+        <SearchBar services={services} onSearch={onSearch} />
         
 
       </div>

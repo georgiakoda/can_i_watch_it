@@ -2,30 +2,11 @@ import React, { useState } from 'react';
 import { InputGroup, Form, Button, Dropdown, DropdownButton, Alert } from 'react-bootstrap'; 
 
 
-const SearchBar = ({ services, onSearch, filterBy, setFilter }) => {
+const SearchBar = ({ services, onSearch }) => {
 
   const [selectedServices, setSelectedServices] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
-
-  
-  
-  const handleFilterChange = (filterType) => {
-    const movieChecked = document.getElementById("movie").checked;
-    const seriesChecked = document.getElementById("series").checked;
-
-    if (movieChecked && seriesChecked) {
-      setFilter([]); // No filtering when both are checked
-    } else if (movieChecked) {
-      setFilter(["movie"]); // Filter by movie
-    } else if (seriesChecked) {
-      setFilter(["series"]); // Filter by series
-    } else {
-      setFilter([]); // No filtering when none are checked
-    }
-
-  };
-  
 
 
   const handleCheckboxChange = (event, service) => {
@@ -40,8 +21,6 @@ const SearchBar = ({ services, onSearch, filterBy, setFilter }) => {
 
   const handleSearchClick = () => {
 
-    handleFilterChange();
-
     if (!selectedServices.length && !searchText) {
       setAlertMessage('Please enter a search term and select at least one streaming service.');
     } else if (!selectedServices.length) {
@@ -50,7 +29,7 @@ const SearchBar = ({ services, onSearch, filterBy, setFilter }) => {
       setAlertMessage('Please enter a search term.');
     } else {
       setAlertMessage(''); // Clear alert if everything is correct
-      onSearch(selectedServices, searchText, filterBy);
+      onSearch(selectedServices, searchText);
     }
 
   };
@@ -125,40 +104,6 @@ const SearchBar = ({ services, onSearch, filterBy, setFilter }) => {
         </InputGroup>
         
 
-        <div>
-            <InputGroup className="d-flex- justify-content-center">
-
-              <p className="mx-3"><small>Filter results by:</small></p>
-
-              <div className="form-check">
-
-                <input 
-                  type="checkbox" 
-                  className="form-check-input me-2" 
-                  id="movie"
-                  >
-                </input>
-                <label className="form-check-label me-2" htmlFor="movieCheck"><small>Movie</small></label>
-
-              </div>
-              
-              <div className="form-check">
-
-                <input 
-                  type="checkbox" 
-                  className="form-check-input me-2" 
-                  id="series"
-                  >
-                </input>
-                <label className="form-check-label" htmlFor="seriesCheck"><small>Series</small></label>
-
-              </div>
-     
-            
-            </InputGroup>
-            
-      
-        </div>
       </div>
     );
 };

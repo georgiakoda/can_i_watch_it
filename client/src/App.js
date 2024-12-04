@@ -43,17 +43,17 @@ function App() {
 
   const [searchData, setSearchData] = useState({ services: [], query: '' });
   const [watchlist, setWatchlist] = useState([]);
-  const [filterBy, setFilter] = useState([]);
 
-  const handleSearch = (services, query, filters) => {
+  const handleSearch = (services, query) => {
 
-    setSearchData({ services, query, filters }); // Store the search data
+    setSearchData({ services, query }); // Store the search data
 
   };
 
   
 
   useEffect(() => {
+    
     // Get the current session on app load
     const getCurrentSession = async () => {
 
@@ -99,17 +99,14 @@ function App() {
         <>
       <Header 
         onSearch={handleSearch} 
-        services={services} 
-        filterBy={filterBy} 
-        setFilter={setFilter} />
+        services={services}  />
 
       {searchData.query && <Results 
         searchData={searchData} 
         selectedServices={searchData.services} 
         services={services} user={user} 
         watchlist={watchlist} 
-        setWatchlist={setWatchlist} 
-        filterBy={filterBy} />}
+        setWatchlist={setWatchlist} />}
       </>
       } />
         <Route path="/about" element={<About />} />
