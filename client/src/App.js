@@ -95,20 +95,21 @@ function App() {
       <Routes>
       
       
-      <Route path="/" element={
-        <>
-      <Header 
-        onSearch={handleSearch} 
-        services={services}  />
+        <Route path="/" element={
+          <>
+        <Header 
+          onSearch={handleSearch} 
+          services={services}  />
 
-      {searchData.query && <Results 
-        searchData={searchData} 
-        selectedServices={searchData.services} 
-        services={services} user={user} 
-        watchlist={watchlist} 
-        setWatchlist={setWatchlist} />}
-      </>
-      } />
+        {searchData.query && <Results 
+          searchData={searchData} 
+          selectedServices={searchData.services} 
+          services={services} user={user} 
+          watchlist={watchlist} 
+          setWatchlist={setWatchlist} />}
+        </>
+        } />
+        
         <Route path="/about" element={<About />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/signup" element={<SignUp />} />
