@@ -2,47 +2,59 @@ import fetch from 'node-fetch';
 import express from 'express';
 import cors from 'cors';
 
-const app = express();
+// For hiding API keys
+import dotenv from 'dotenv';
+dotenv.config(); 
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
-const WATCHMODE_API_KEY = process.env.WATCHMODE_API_KEY; 
-const API_URL = 'https://streaming-availability.p.rapidapi.com/shows/search/title';
+const WATCHMODE_API_KEY = process.env.WATCHMODE_API_KEY;
+
+const app = express();
 
 app.use(express.json()); 
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-}));
+// For running the front end in port 3000 and back-end in 5001
+const corsOptions = {
+  origin: 'http://localhost:3000', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'], 
+  preflightContinue: true, 
+  optionsSuccessStatus: 204, 
+};
+
+app.use(cors(corsOptions));
 
 // Movie of the night API endpoint for searching
 app.get('/api/search', async (req, res) => {
 
-  const { title, country = 'us', show_type } = req.query;
+  const { title, country = 'us' } = req.query;
 
   if (!title) {
     return res.status(400).json({ error: 'Missing title in query' });
   }
 
-  try {
-    let externalApiUrl = `${API_URL}?title=${encodeURIComponent(title)}&country=${country}`;
-
-    if (show_type) {
-      externalApiUrl += `&show_type=${encodeURIComponent(show_type)}`;
+  const url = `https://streaming-availability.p.rapidapi.com/shows/search/title?country=${country}&title=${title}`;
+  
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': RAPIDAPI_KEY,
+      'x-rapidapi-host': 'streaming-availability.p.rapidapi.com'
     }
+  };
+
+  try {
+
+    const response = await fetch(url, options);
+	  const data = await response.json();
     
-    const response = await fetch(externalApiUrl, {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': RAPIDAPI_KEY,
-            'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com',
-        },
-    });
+    console.log("Response status:", response.status);
+    console.log("RAPIDAPI_KEY:", RAPIDAPI_KEY);
 
     if (!response.ok) {
         return res.status(response.status).json({ error: 'Error fetching data from the API' });
     }
 
-    const data = await response.json();
     res.json(data); 
     
   } catch (error) {
@@ -57,6 +69,8 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/watchmode-sources', async (req, res) => {
   const { imdbID } = req.query;
 
+  console.log('Received IMDb ID:', imdbID);
+
   if (!imdbID) {
     return res.status(400).json({ error: 'Missing imdbId in query' });
   }
@@ -64,16 +78,23 @@ app.get('/api/watchmode-sources', async (req, res) => {
   const watchmodeUrl = `https://api.watchmode.com/v1/title/${imdbID}/sources/?apiKey=${WATCHMODE_API_KEY}&regions=US`;
 
   try {
-    const watchmodeResponse = await fetch(watchmodeUrl, { method: 'GET' });
 
-    if (!watchmodeResponse.ok) {
-      return res.status(watchmodeResponse.status).json({ error: 'Error fetching data from Watchmode API' });
-    }
-
-    const watchmodeData = await watchmodeResponse.json();
-
-    res.json(watchmodeData);
-
+    // I'm using .then() because that's how the API docs did it in their example and I don't want to freestyle
+    fetch(watchmodeUrl, { method: 'GET' })
+      .then((watchmodeResponse) => {
+        if (!watchmodeResponse.ok) {
+          return res.status(watchmodeResponse.status).json({ error: 'Error fetching data from Watchmode API' });
+        }
+        return watchmodeResponse.json(); 
+      })
+      .then((watchmodeData) => {
+        res.json(watchmodeData); 
+      })
+      .catch((error) => {
+        console.error('Watchmode API Fetch Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      });
+    
   } catch (error) {
     console.error('Watchmode API Fetch Error:', error);
     res.status(500).json({ error: 'Internal server error' });
