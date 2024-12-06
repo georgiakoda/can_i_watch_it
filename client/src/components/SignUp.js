@@ -39,7 +39,7 @@ const SignUp = () => {
         });
 
         if (error) {
-            setErrorMessage(error.message); 
+            setErrorMessage('There was a problem creating your account.'); 
         } else {
             setSuccessMessage('Sign up successful! Check your email to confirm your account.');
             setFormData({
@@ -78,7 +78,7 @@ const SignUp = () => {
             {/* Error message for incomplete form */}
             {errorMessage && (
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i className="bi bi-exclamation-triangle-fill"></i> {errorMessage}
+                    <i className="bi bi-exclamation-triangle-fill mx-2"></i> {errorMessage}
                     <button 
                         type="button" 
                         className="btn-close" 
@@ -92,7 +92,7 @@ const SignUp = () => {
             {/* Form submitted message */}
             {successMessage && (
                 <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <i className="bi bi-check-circle-fill"></i> {successMessage}
+                    <i className="bi bi-check-circle-fill mx-2"></i> {successMessage}
                     <button
                         type="button"
                         className="btn-close"

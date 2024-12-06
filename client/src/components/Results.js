@@ -10,6 +10,9 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
     const [showServices, setShowServices] = useState({});
     const [availabilityResults, setAvailabilityResults] = useState({}); 
     const [errorMessage, setErrorMessage] = useState("");
+    const [successAlert, setAlertMessage] = useState("");
+    const [alreadyOnListMessage, setAlreadyOnListMessage] = useState("");
+
 
 
     useEffect(() => {
@@ -21,6 +24,8 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
 
         const fetchResults = async () => {
 
+          console.log("fetchResults called with:", searchData);
+
           setLoading(true);
           setError('');
 
@@ -28,18 +33,14 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
           if (!query) return; 
 
           try {
+
             // Build the API URL dynamically based on the filters
             let apiUrl = `http://localhost:5001/api/search?title=${encodeURIComponent(query)}`;
 
-            // Add show_type filter if filterBy is not empty
-            if (searchData.filters && searchData.filters.length > 0) {
-
-              const filterParam = `show_type=${searchData.filters[0]}`;
-              apiUrl += `&${filterParam}`;
-
-            }
+            //console.log("Base API URL:", apiUrl);
 
 
+            //console.log("Fetching from API with URL:", apiUrl);
             const response = await fetch(apiUrl);
             const data = await response.json();
 
@@ -183,12 +184,15 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
             } else {
 
               setWatchlist(updatedWatchlist);
+              setAlertMessage("Item successfully added to your watchlist!");
         
             }
           } else {
 
-            //Maybe I'll come back and add a nice pop-up message for this idk
-            console.log("Item already in watchlist");
+ 
+            setAlreadyOnListMessage("This item is already on your watchlist.")
+            setAlertMessage("");
+            //console.log("Item already in watchlist");
 
           }
         } catch (error) {
@@ -203,7 +207,7 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
 
         <div className="container my-5">
           
-          {/* Display Alert if Error */}
+          {/* Error Alert */}
           {errorMessage && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
               <i className="bi bi-exclamation-triangle-fill"></i> {errorMessage}
@@ -216,6 +220,22 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
               ></button>
             </div>
           )}
+
+          {/* Added to Watchlist Alert */}
+          {successAlert && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert"> 
+              {successAlert}
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => setAlertMessage("")}></button>
+            </div>
+          )}
+
+          {/* Already in Watchlist Alert */}
+          {alreadyOnListMessage && (
+            <div className="alert alert-warning alert-dismissible fade show" role="alert">
+              {alreadyOnListMessage}
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => setAlreadyOnListMessage("")}></button>
+            </div>
+            )}
 
 
             <div className="p-5 bg-body-tertiary rounded-3">
