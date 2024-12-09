@@ -49,7 +49,6 @@ app.get('/api/search', async (req, res) => {
 	  const data = await response.json();
     
     console.log("Response status:", response.status);
-    console.log("RAPIDAPI_KEY:", RAPIDAPI_KEY);
 
     if (!response.ok) {
         return res.status(response.status).json({ error: 'Error fetching data from the API' });
@@ -69,7 +68,7 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/watchmode-sources', async (req, res) => {
   const { imdbID } = req.query;
 
-  console.log('Received IMDb ID:', imdbID);
+  //console.log('Received IMDb ID:', imdbID);
 
   if (!imdbID) {
     return res.status(400).json({ error: 'Missing imdbId in query' });
