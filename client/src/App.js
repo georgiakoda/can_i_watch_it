@@ -12,7 +12,7 @@ import Resources from './components/Resources';
 import SignUp from './components/SignUp';
 import Watchlist from './components/Watchlist';
 import SignIn from './components/SignIn';
-import ResultsTest from './components/ResultsTest';
+//import ResultsTest from './components/ResultsTest';
 
 
 // Streaming Service Logo Icons
@@ -46,7 +46,7 @@ function App() {
 
   const handleSearch = (services, query) => {
 
-    setSearchData({ services, query }); // Store the search data
+    setSearchData({ services, query }); 
 
   };
 
@@ -58,8 +58,6 @@ function App() {
     const getCurrentSession = async () => {
 
       const { data: { session } } = await supabase.auth.getSession();
-      //console.log('Current session:', session);
-      //console.log('Session user:', session?.user); 
       if (session && session.user) {
         setUser(session.user);
       } else {
@@ -69,23 +67,19 @@ function App() {
 
     getCurrentSession();
 
-    // Subscribe to authentication state changes
     const { data: authListener } = supabase.auth.onAuthStateChange(
     (event, session) => {
-    setUser(session?.user || null); // Update the user state
+    setUser(session?.user || null); 
   }
 
 );
 
-    // Cleanup the listener when the component unmounts
     return () => {
       if (authListener?.subscription) {
         authListener.subscription.unsubscribe();
       }
     };
   }, []);
-
-  //console.log('User state in App.js:', user);
 
   return (
     <Router>
@@ -115,7 +109,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/watchlist" element={<Watchlist watchlist={watchlist} services={services}/>} />
-        <Route path="/resultstest" element={<ResultsTest services={services} />} />
+
 
       </Routes>
     </div>

@@ -60,7 +60,7 @@ const NavBar = () => {
             {/* About Dropup */}
             <li className="nav-item dropup">
             
-              <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><span><i className="bi bi-info-circle px-1"></i></span>About</a>
+              <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false"><span><i className="bi bi-info-circle px-1"></i></span>About</a>
             
               <ul className="dropdown-menu">
                 <li>
@@ -83,7 +83,7 @@ const NavBar = () => {
             {/* Account */}
             <li className="nav-item dropup">
             
-              <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><span><i className="bi bi-person px-1"></i></span>Account</a>
+              <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false"><span><i className="bi bi-person px-1"></i></span>Account</a>
             
               <ul className="dropdown-menu">
 
@@ -93,10 +93,6 @@ const NavBar = () => {
 
                 <li>
                   <Link to="/signup" className="nav-link dropdown-item">Create an Account</Link>
-                </li> 
-
-                <li>
-                  <Link to="/resultstest" className="nav-link dropdown-item">Result Test Display Page</Link>
                 </li>      
 
               </ul>
