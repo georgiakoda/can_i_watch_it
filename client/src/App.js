@@ -24,8 +24,6 @@ import DisneyIcon from './assets/disney-icon.png';
 import PeacockIcon from './assets/peacock-icon.png';
 import PrimeIcon from './assets/prime-icon.png';
 
-
-
 const services = [
   { imageSrc: AppleIcon, label: 'Apple TV+', id: 'apple', link: '#', wmID:371 },
   { imageSrc: DisneyIcon, label: 'Disney+', id: 'disney', link: '#', wmID:372 },
@@ -50,7 +48,6 @@ function App() {
 
   };
 
-  
 
   useEffect(() => {
     

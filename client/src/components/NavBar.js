@@ -22,7 +22,6 @@ const NavBar = () => {
 
     fetchUser();
     
-    // Listen for authentication state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null); 
     });

@@ -5,7 +5,6 @@ import cors from 'cors';
 // For hiding API keys
 import dotenv from 'dotenv';
 dotenv.config(); 
-
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 const WATCHMODE_API_KEY = process.env.WATCHMODE_API_KEY;
 
@@ -13,7 +12,6 @@ const app = express();
 
 app.use(express.json()); 
 
-// For running the front end in port 3000 and back-end in 5001
 const corsOptions = {
   origin: 'http://localhost:3000', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -48,7 +46,7 @@ app.get('/api/search', async (req, res) => {
     const response = await fetch(url, options);
 	  const data = await response.json();
     
-    console.log("Response status:", response.status);
+    //console.log("Response status:", response.status);
 
     if (!response.ok) {
         return res.status(response.status).json({ error: 'Error fetching data from the API' });
@@ -68,7 +66,6 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/watchmode-sources', async (req, res) => {
   const { imdbID } = req.query;
 
-  //console.log('Received IMDb ID:', imdbID);
 
   if (!imdbID) {
     return res.status(400).json({ error: 'Missing imdbId in query' });

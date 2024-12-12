@@ -14,7 +14,6 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
     const [alreadyOnListMessage, setAlreadyOnListMessage] = useState("");
 
 
-
     useEffect(() => {
 
       if (!services) {
@@ -24,8 +23,6 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
 
         const fetchResults = async () => {
 
-          console.log("fetchResults called with:", searchData);
-
           setLoading(true);
           setError('');
 
@@ -34,13 +31,8 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
 
           try {
 
-            // Build the API URL dynamically based on the filters
             let apiUrl = `http://localhost:5001/api/search?title=${encodeURIComponent(query)}`;
 
-            //console.log("Base API URL:", apiUrl);
-
-
-            //console.log("Fetching from API with URL:", apiUrl);
             const response = await fetch(apiUrl);
             const data = await response.json();
 
@@ -114,8 +106,9 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
         }
       };
 
-      // The purpose of this is to limit Watchmode API calls.
-      // Otherwise the API would be called for each displayed result. Which is bad.
+      // The purpose of this is to limit Watchmode API calls
+      // I don't like this feature, but I'm using an IMDB id to make the request so it's a double API call
+      // every time and I don't want to hit my limit before I present this
       const toggleShowServices = async (imdbID, servicesList) => {
         setShowServices((prev) => ({
           ...prev,
@@ -147,8 +140,6 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
           services: selectedServices, 
         };
 
-
-
         try {
           // Fetch the current watchlist from Supabase for the logged-in user
           const { data: userInfo, error: fetchError } = await supabase
@@ -167,10 +158,11 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
       
           // Check if the item is already in the watchlist
           if (!existingWatchlist.some((watchlistItem) => watchlistItem.imdbID === item.imdbID)) {
-            // Append the new item to the watchlist
+
+            // Add to list
             const updatedWatchlist = [...existingWatchlist, newItem];
       
-            // Update the watchlist in the database
+            // Update in the database
             const { data, error } = await supabase
               .from('userInfo')
               .update({ watchlist: updatedWatchlist })
@@ -188,11 +180,9 @@ const Results = ({ searchData, selectedServices, services, user, watchlist, setW
         
             }
           } else {
-
  
             setAlreadyOnListMessage("This item is already on your watchlist.")
             setAlertMessage("");
-            //console.log("Item already in watchlist");
 
           }
         } catch (error) {
