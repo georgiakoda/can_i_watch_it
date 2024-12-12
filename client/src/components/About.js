@@ -71,9 +71,9 @@ const About = () => (
             
             <div className="d-flex justify-content-center pt-3 align-items-center my-3">
 
-                    <div className="card text-center rounded-3">
+                    <div className="card text-center rounded-3 w-75">
                         <h3 className="card-header fw-light mb-3">Scope</h3>
-                        <p className="px-4">This project is limited to the following streaming services and only shows title availability in the United States.</p>
+                        <p className="px-4">This project is limited to the following streaming services: </p>
 
                         <div className="container w-75 text-center">
 
@@ -120,6 +120,7 @@ const About = () => (
 
                         </div>       
 
+                        <p className="px-4">Availability shown is limited to the United States. "Add-on" services are not included.</p>
                     </div>
               
             </div>
