@@ -25,11 +25,11 @@
    cd can-i-watch-it
 
 2. Install dependencies for the server and client:
-    # Install server dependencies
+    **Install server dependencies**
     cd server
     npm install
 
-    # Install client dependencies
+    **Install client dependencies**
     cd ../client
     npm install
 
@@ -40,11 +40,11 @@
     SUPABASE_KEY=your_supabase_key
 
 4. Run the application
-    # Start the backend server
+    **Start the backend server**
     cd server
     npm start
 
-    # Start the frontend
+    **Start the frontend**
     cd ../client
     npm start
 
